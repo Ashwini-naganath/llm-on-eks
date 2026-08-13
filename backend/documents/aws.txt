@@ -1,0 +1,1 @@
+Amazon EKS is a managed Kubernetes service provided by AWS. EKS runs the Kubernetes control plane, while worker nodes can run on EC2. Amazon ECR is a private container registry used to store Docker images. A typical AWS container workflow is Docker build, ECR push, and EKS deployment.

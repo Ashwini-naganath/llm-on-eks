@@ -1,0 +1,1 @@
+DevOps combines development and operations practices to automate software delivery. Common DevOps tools include Git, Docker, Kubernetes, Jenkins, Terraform, Ansible, Prometheus, and Grafana. CI/CD pipelines automate building, testing, security scanning, and deployment of applications.
