@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from backend.ollama_client import generate_response
+from ollama_client import generate_response
 
 
 app = FastAPI()

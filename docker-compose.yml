@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./backend
+    container_name: llm-backend
+    ports:
+      - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build: ./frontend
+    container_name: llm-frontend
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+

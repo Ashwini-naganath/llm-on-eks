@@ -1,6 +1,6 @@
 import requests
 
-OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_URL = "http://host.docker.internal:11434/api/generate"
 
 def generate_response(prompt):
     payload = {

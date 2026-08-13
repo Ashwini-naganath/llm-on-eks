@@ -10,7 +10,7 @@ prompt = st.text_area("Ask a DevOps question")
 if st.button("Ask"):
     try:
         response = requests.get(
-            "http://127.0.0.1:8000/chat",
+           "http://llm-backend:8000/chat",
             params={"prompt": prompt},
             timeout=30
         )
