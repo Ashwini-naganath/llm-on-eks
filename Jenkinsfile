@@ -36,7 +36,8 @@ pipeline {
             steps {
                 sh '''
                     aws ecr get-login-password --region $AWS_REGION | \
-                    docker login --username AWS --password-stdin $ECR_REPO
+                    docker login --username AWS --password-stdin \
+                    201173334450.dkr.ecr.ap-south-1.amazonaws.com
                 '''
             }
         }
@@ -48,12 +49,5 @@ pipeline {
                 '''
             }
         }
-        stage('Build Backend Image') {
-    steps {
-        sh '''
-            docker build -t llm-backend:jenkins-${BUILD_NUMBER} ./backend
-        '''
-    }
-}
     }
 }
