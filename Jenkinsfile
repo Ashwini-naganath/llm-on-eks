@@ -48,5 +48,12 @@ pipeline {
                 '''
             }
         }
+        stage('Build Backend Image') {
+    steps {
+        sh '''
+            docker build -t llm-backend:jenkins-${BUILD_NUMBER} ./backend
+        '''
+    }
+}
     }
 }
