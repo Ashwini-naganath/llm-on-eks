@@ -2,12 +2,11 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION   = 'ap-south-1'
-        ECR_BACKEND  = '201173334450.dkr.ecr.ap-south-1.amazonaws.com/llm-backend'
-        ECR_FRONTEND = '201173334450.dkr.ecr.ap-south-1.amazonaws.com/llm-frontend'
-        IMAGE_TAG    = "${BUILD_NUMBER}"
-    }
-
+    	AWS_REGION = 'ap-south-1'
+    	ECR_REGISTRY = '201173334450.dkr.ecr.ap-south-1.amazonaws.com'
+    	BACKEND_IMAGE = "${ECR_REGISTRY}/llm-backend:${BUILD_NUMBER}"
+    	FRONTEND_IMAGE = "${ECR_REGISTRY}/llm-frontend:${BUILD_NUMBER}"
+}
     stages {
 
         stage('Checkout') {
@@ -50,6 +49,23 @@ pipeline {
                 '''
             }
         }
+	stage('Security Scan') {
+    	   steps {
+        	sh '''
+            	echo "Scanning backend image..."
+            	trivy image \
+           	   --severity HIGH,CRITICAL \
+             	 --exit-code 1 \
+             	 $BACKEND_IMAGE
+
+            	echo "Scanning frontend image..."
+           	 trivy image \
+              --severity HIGH,CRITICAL \
+              --exit-code 1 \
+              $FRONTEND_IMAGE
+       		 '''
+    }
+}
 
         stage('Login to ECR') {
             steps {
