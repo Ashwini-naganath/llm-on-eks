@@ -49,5 +49,24 @@ pipeline {
                 '''
             }
         }
-    }
+
+	stage('Deploy with Helm') {
+    	    steps {
+        	sh '''
+            		export AWS_PAGER=""
+
+           		 helm upgrade --install llm-rag ./helm/llm-rag \
+              		--set backend.tag=$IMAGE_TAG
+        		'''
+    	}	
+	}	
+
+	stage('Verify Deployment') {
+   		 steps {
+        		sh '''
+           			 kubectl rollout status deployment/llm-backend --timeout=180s
+            			kubectl get pods
+        		   '''
+   		 }
+}   		 }
 }
