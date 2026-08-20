@@ -57,7 +57,9 @@ pipeline {
 
            		 helm upgrade --install llm-rag ./helm/llm-rag \
               		--set backend.tag=$IMAGE_TAG \
-              		--set frontend.tag=v2-rag
+              		--set frontend.tag=v2-rag \
+			--atomic \
+ 		        --timeout 5m
        		     '''
     }
 }
