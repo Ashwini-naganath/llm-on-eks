@@ -86,8 +86,8 @@ pipeline {
                     helm upgrade --install llm-rag ./helm/llm-rag \
                       --set backend.tag=$IMAGE_TAG \
                       --set frontend.tag=$IMAGE_TAG \
-                      --atomic \
-                      --timeout 5m
+                      --rollback-on-failure \       
+  	              --timeout 5m
                 '''
             }
         }
@@ -115,7 +115,28 @@ pipeline {
                     echo
                 '''
             }
+
         }
+	stage('Application Health Test') {
+	    steps {
+        	sh '''
+            echo "Testing backend application..."
+
+            kubectl run ci-health-test \
+              --rm \
+              --restart=Never \
+              --image=curlimages/curl \
+              -- \
+              curl -f -sS --max-time 90 \
+              "http://llm-backend:8000/chat?prompt=hello"
+
+            echo
+            echo "Application health test PASSED"
+        '''
+    }
+}
+
+
     }
 
     post {
