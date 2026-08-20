@@ -1,0 +1,14 @@
+backend:
+  image: 201173334450.dkr.ecr.ap-south-1.amazonaws.com/llm-backend
+  tag: "10"
+  replicas: 1
+
+frontend:
+  image: 201173334450.dkr.ecr.ap-south-1.amazonaws.com/llm-frontend
+  tag: "v2-rag"
+  replicas: 1
+
+ollama:
+  image: ollama/ollama
+  tag: latest
+  replicas: 1
