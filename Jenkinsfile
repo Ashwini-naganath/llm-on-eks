@@ -2,11 +2,13 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = 'ap-south-1'
-        ECR_REPO   = '201173334450.dkr.ecr.ap-south-1.amazonaws.com/llm-backend'
-        IMAGE_TAG  = "${BUILD_NUMBER}"
-    }
+    AWS_REGION = 'ap-south-1'
 
+    BACKEND_ECR = '201173334450.dkr.ecr.ap-south-1.amazonaws.com/llm-backend'
+    FRONTEND_ECR = '201173334450.dkr.ecr.ap-south-1.amazonaws.com/llm-frontend'
+
+    IMAGE_TAG = "${BUILD_NUMBER}"
+}
     stages {
 
         stage('Checkout') {
@@ -25,10 +27,10 @@ pipeline {
         stage('Build Image') {
             steps {
                 sh '''
-                    docker build \
-                      -t $ECR_REPO:$IMAGE_TAG \
-                      ./backend
-                '''
+                     docker build \
+  			-t $BACKEND_ECR:$IMAGE_TAG \
+  			./backend      
+      		    '''
             }
         }
 
@@ -45,11 +47,25 @@ pipeline {
         stage('Push Image') {
             steps {
                 sh '''
-                    docker push $ECR_REPO:$IMAGE_TAG
-                '''
+                   docker push $BACKEND_ECR:$IMAGE_TAG                '''
             }
         }
-
+	stage('Build Frontend Image') {
+    	   steps {
+               sh '''
+           	 docker build \
+              	-t $FRONTEND_ECR:$IMAGE_TAG \
+             	 ./frontend
+       		 '''
+    }
+}
+	stage('Push Frontend Image') {
+ 	   steps {
+        	sh '''
+            	    docker push $FRONTEND_ECR:$IMAGE_TAG
+        		'''
+    }
+}
 	stage('Deploy with Helm') {
     	     steps {
        		 sh '''
@@ -57,7 +73,7 @@ pipeline {
 
            		 helm upgrade --install llm-rag ./helm/llm-rag \
               		--set backend.tag=$IMAGE_TAG \
-              		--set frontend.tag=v2-rag \
+			--set frontend.tag=$IMAGE_TAG \
 			--atomic \
  		        --timeout 5m
        		     '''

@@ -12,7 +12,7 @@ if st.button("Ask"):
         response = requests.get(
            "http://llm-backend:8000/chat",
             params={"prompt": prompt},
-            timeout=30
+            timeout=120
         )
 
         st.write("Status Code:", response.status_code)
