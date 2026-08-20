@@ -4,8 +4,9 @@ pipeline {
     environment {
     	AWS_REGION = 'ap-south-1'
     	ECR_REGISTRY = '201173334450.dkr.ecr.ap-south-1.amazonaws.com'
-    	BACKEND_IMAGE = "${ECR_REGISTRY}/llm-backend:${BUILD_NUMBER}"
-    	FRONTEND_IMAGE = "${ECR_REGISTRY}/llm-frontend:${BUILD_NUMBER}"
+    	BACKEND_IMAGE = "${ECR_REGISTRY}/llm-backend"
+    	FRONTEND_IMAGE = "${ECR_REGISTRY}/llm-frontend"
+	 IMAGE_TAG   = "${BUILD_NUMBER}"
 }
     stages {
 
