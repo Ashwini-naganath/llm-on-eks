@@ -62,11 +62,12 @@ pipeline {
     }
 }
 	stage('Verify Deployment') {
-   		 steps {
-        		sh '''
-           			 kubectl rollout status deployment/llm-backend --timeout=180s
-            			kubectl get pods
-        		   '''
-   		 }
-}   		 }
-}
+  	  steps {
+        	sh '''
+            		kubectl rollout status deployment/llm-backend --timeout=180s
+            		kubectl rollout status deployment/llm-frontend --timeout=180s
+
+           		 kubectl get pods
+        	 '''
+    }
+}}
