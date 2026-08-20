@@ -86,7 +86,7 @@ pipeline {
                     helm upgrade --install llm-rag ./helm/llm-rag \
                       --set backend.tag=$IMAGE_TAG \
                       --set frontend.tag=$IMAGE_TAG \
-                      --rollback-on-failure \       
+                      --rollback-on-failure \
   	              --timeout 5m
                 '''
             }
