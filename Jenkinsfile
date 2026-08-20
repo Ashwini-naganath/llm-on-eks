@@ -51,16 +51,16 @@ pipeline {
         }
 
 	stage('Deploy with Helm') {
-    	    steps {
-        	sh '''
+    	     steps {
+       		 sh '''
             		export AWS_PAGER=""
 
            		 helm upgrade --install llm-rag ./helm/llm-rag \
-              		--set backend.tag=$IMAGE_TAG
-        		'''
-    	}	
-	}	
-
+              		--set backend.tag=$IMAGE_TAG \
+              		--set frontend.tag=v2-rag
+       		     '''
+    }
+}
 	stage('Verify Deployment') {
    		 steps {
         		sh '''
