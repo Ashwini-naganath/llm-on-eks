@@ -120,22 +120,30 @@ pipeline {
 	stage('Application Health Test') {
 	    steps {
         	sh '''
-            echo "Testing backend application..."
+            	echo "Testing backend application..."
 
-            kubectl run ci-health-test \
-              --rm \
-              --restart=Never \
-              --image=curlimages/curl \
-              -- \
-              curl -f -sS --max-time 90 \
-              "http://llm-backend:8000/chat?prompt=hello"
+            	kubectl delete pod ci-health-test --ignore-not-found=true
 
-            echo
+           	 kubectl run ci-health-test \
+             	 --restart=Never \
+             	 --image=curlimages/curl \
+             	 -- \
+             	 curl -f -sS --max-time 90 \
+             	 "http://llm-backend:8000/chat?prompt=hello"
+
+           	 kubectl wait \
+              --for=jsonpath='{.status.phase}'=Succeeded \
+              pod/ci-health-test \
+              --timeout=120s
+
+            kubectl logs ci-health-test
+
+            kubectl delete pod ci-health-test --ignore-not-found=true
+
             echo "Application health test PASSED"
         '''
     }
 }
-
 
     }
 
